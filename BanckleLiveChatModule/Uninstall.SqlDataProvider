@@ -1,0 +1,25 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/** Drop Table **/
+
+DROP TABLE tbl_Tokens
+GO
+
+/** Drop Stored Procedures **/
+
+DROP PROCEDURE spr_BC_GetTokenByUser
+DROP PROCEDURE spr_BC_InsertToken
+DROP PROCEDURE spr_BC_DeleteToken
+DROP PROCEDURE spr_BC_GetFooterItemID
+GO
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

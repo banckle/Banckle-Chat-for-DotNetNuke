@@ -1,0 +1,127 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/** Create Table **/
+
+if not exists (select * from dbo.sysobjects where id = object_id(N'[tbl_Tokens]') and OBJECTPROPERTY(id, N'IsTable') = 1)
+	BEGIN
+		CREATE TABLE [dbo].[tbl_Tokens](
+		[TokenID] [nvarchar](50) NULL,
+		[userid] [nvarchar](50) NULL
+		) ON [PRIMARY]
+	END
+GO
+
+
+
+/** Create Stored Procedures **/
+
+-- =============================================
+-- Author:		<Assad Mahmood Qazi>
+-- Create date: <10/5/2012>
+-- Description:	<Insert the generated token and the userid in the table tbl_Tokens>
+-- =============================================
+IF EXISTS (SELECT * FROM sys.objects WHERE [name] = 'spr_BC_InsertToken')
+BEGIN
+drop procedure [dbo].[spr_BC_InsertToken]
+END
+
+GO
+
+CREATE PROCEDURE spr_BC_InsertToken 
+	@Token         nvarchar(50),
+	@userid        nvarchar(50)
+AS
+BEGIN
+
+    INSERT INTO [tbl_Tokens]
+           ([TokenID]
+           ,[userid])
+     VALUES
+           (@Token
+           ,@userid)
+END
+GO
+
+-- =============================================
+-- Author:		<Assad Mahmood Qazi>
+-- Create date: <10/5/2012>
+-- Description:	<delete the generated token and the token of that userid in the table tbl_Tokens>
+-- =============================================
+IF EXISTS (SELECT * FROM sys.objects WHERE [name] = 'spr_BC_DeleteToken')
+BEGIN
+drop procedure [dbo].[spr_BC_DeleteToken]
+END
+
+GO
+
+CREATE PROCEDURE spr_BC_DeleteToken 
+	@Token         nvarchar(50),
+	@userid        nvarchar(50)
+AS
+BEGIN
+
+    DELETE FROM tbl_Tokens where TokenID = @Token and userid = @userid
+          
+END
+GO
+
+
+-- =============================================
+-- Author:		<Assad Mahmood Qazi>
+-- Create date: <20/5/2012>
+-- Description:	<select the generated token and the token of that userid in the table tbl_Tokens>
+-- =============================================
+IF EXISTS (SELECT * FROM sys.objects WHERE [name] = 'spr_BC_GetTokenByUser')
+BEGIN
+drop procedure [dbo].[spr_BC_GetTokenByUser]
+END
+
+GO
+
+CREATE PROCEDURE spr_BC_GetTokenByUser 
+	@Token         nvarchar(50),
+	@userid        nvarchar(50)
+AS
+BEGIN
+
+    SELECT * FROM tbl_Tokens where TokenID = @Token and userid = @userid
+          
+END
+GO
+
+-- =============================================
+-- Author:		<Assad Mahmood Qazi>
+-- Create date: <20/5/2012>
+-- Description:	<get any footer module itemId>
+-- =============================================
+IF EXISTS (SELECT * FROM sys.objects WHERE [name] = 'spr_BC_GetFooterItemID')
+BEGIN
+drop procedure [dbo].[spr_BC_GetFooterItemID]
+END
+
+GO
+
+CREATE PROCEDURE spr_BC_GetFooterItemID 
+	@ItemID         nvarchar(50)
+AS
+BEGIN
+
+    SELECT b.ItemID FROM TabModules As a INNER JOIN HtmlText As b ON (a.ModuleID = b.ModuleID) WHERE a.PaneName LIKE '%Footer%';
+          
+END
+GO
+
+
+
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/
